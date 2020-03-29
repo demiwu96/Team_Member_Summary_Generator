@@ -73,9 +73,6 @@ const managerQ = [
 gatherInfo();
 const members = [];
 
-render(members);
-
-
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
@@ -85,10 +82,6 @@ render(members);
 // `output` folder. You can use the variable `outputPath` above target this location.
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
 
 // HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
 // and Intern classes should all extend from a class named Employee; see the directions
@@ -103,7 +96,6 @@ async function gatherInfo() {
         const managerInfo = await inquirer.prompt(managerQ);
         const newManager = new Manager(managerInfo.name, managerInfo.id, managerInfo.email, managerInfo.officeNumber);
         members.push(newManager);
-        console.log(members);
 
         // input engineer information
         const engineerNum = await inquirer.prompt([{ type: "number", message: "How many engineers?", name: "num" }]);
@@ -112,7 +104,6 @@ async function gatherInfo() {
             const newEngineer = new Engineer(response.name, response.id, response.email, response.github);
             members.push(newEngineer);
         };
-        console.log(members);
 
         // input intern information
         const internNum = await inquirer.prompt([{ type: "number", message: "How many interns?", name: "num" }]);
@@ -121,9 +112,24 @@ async function gatherInfo() {
             const newIntern = new Intern(response.name, response.id, response.email, response.school);
             members.push(newIntern);
         };
-        console.log(members);
+
+        const html = await render(members);
+        // check if output folder exists, create the folder if not
+        if (!fs.existsSync(OUTPUT_DIR)) {
+            fs.mkdirSync(OUTPUT_DIR);
+        };
+
+        // create the html page
+        fs.writeFile(outputPath, html, err => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Successful!");
+            };
+        });
 
     } catch (err) {
+        // if any err happens, show err
         console.log(err);
     };
 };
