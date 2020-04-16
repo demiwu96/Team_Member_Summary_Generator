@@ -33,6 +33,11 @@ Intern:
     * [jest](https://jestjs.io/)
     * [inquirer](https://www.npmjs.com/package/inquirer)
     * [path](https://nodejs.org/docs/latest/api/path.html)
+    
+Run the following commend in the terminal to install the required npm:
+```sh
+npm install
+```
 
 ## Built with
 * HTML
